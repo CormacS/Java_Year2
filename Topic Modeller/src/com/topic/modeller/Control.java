@@ -9,7 +9,7 @@ public class Control {
 		f1.ReadFile();
 		
 		
-
+		System.out.println("Test Github");
 	}
 
 }
