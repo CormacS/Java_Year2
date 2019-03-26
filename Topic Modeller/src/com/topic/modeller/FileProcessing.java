@@ -3,6 +3,7 @@ package com.topic.modeller;
 import java.io.File;
 //import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -20,8 +21,8 @@ public class FileProcessing
 	boolean stopped = false;
 
 	//HashMap to get a key and a value
-	Map<String, Integer> File1 = new HashMap<>();
-	Map<String, Integer> File2 = new HashMap<>();
+	LinkedHashMap<String, Integer> File1 = new LinkedHashMap<>();
+	LinkedHashMap<String, Integer> File2 = new LinkedHashMap<>();
 	
 	public void Connect()
 	{
