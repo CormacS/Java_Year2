@@ -680,6 +680,10 @@ take
 
 taken
 
+tell
+
+tells
+
 than
 
 that
