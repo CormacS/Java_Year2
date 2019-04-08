@@ -1,8 +1,10 @@
 package com.topic.modeller;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -15,10 +17,11 @@ public class Compare
 	String top10s;
 	int Scounter = 0;
 	int alike = 0;
+	GUI g1;
+	List<String[]> list = new ArrayList<String[]>();
 	
 	
-	
-	public void sortMap(Map<String,Integer> File1, Map<String,Integer> File2)
+	public List<String[]> sortMap(LinkedHashMap<String,Integer> File1, LinkedHashMap<String,Integer> File2)
 	{
         LinkedHashMap<String, Integer> SortedMap = new LinkedHashMap<>();
         File1.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
@@ -53,14 +56,7 @@ public class Compare
     	       
     		}
     		String[] top1 = top10.split(" ");
-    		
-    		
-        
-    		for(i=0;i<10;i++)
-    		{
-    			System.out.println(top1[i]);
-    		}
-    		
+    		 		
     		
     		counter = 0;
     		Scounter= 0;
@@ -87,29 +83,33 @@ public class Compare
     		}
     		
     		String[] top2 = top10s.split(" ");
+    		System.out.println(top10);
     		
-    		for(i=0;i<10;i++)
-    		{
-    			System.out.println(top2[i]);
-    		}
+    		list.add(top1);
+    		list.add(top2);
+    		return list;
     		
-    		
-    		for(i=0;i<10;i++)
-    		{
-    			for(int j = 0;j<10;j++)
-    			{
-    				if(top1[i].equals(top2[j]))
-    				{
-    					alike = alike + 1;
-    				}
-    			}
-    		}
-    		
-    		System.out.println("The 2 Documents are "+alike*10+"% alike.");
+
     		
 	}
 	
-	
+	public int Comparision(String[] top1,String[] top2)
+	{
+		alike = 0;
+		for(i=0;i<10;i++)
+		{
+			for(int j = 0;j<10;j++)
+			{
+				if(top1[i].equals(top2[j]))
+				{
+					alike = alike + 1;
+				}
+			}
+		}
+		
+		return alike;
+		
+	}
 	
 	
 	
