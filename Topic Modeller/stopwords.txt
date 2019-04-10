@@ -90,6 +90,8 @@ becomes
 
 been
 
+bee!
+
 before
 
 began
@@ -119,6 +121,8 @@ c
 came
 
 can
+
+cant
 
 cannot
 
@@ -153,6 +157,8 @@ do
 does
 
 done
+
+dont
 
 down
 
@@ -324,6 +330,8 @@ i
 
 if
 
+im
+
 important
 
 in
@@ -341,6 +349,8 @@ into
 is
 
 it
+
+it!
 
 its
 
@@ -489,6 +499,8 @@ of
 off
 
 often
+
+oh
 
 old
 
@@ -688,6 +700,8 @@ than
 
 that
 
+thats
+
 the
 
 their
@@ -709,6 +723,8 @@ thing
 things
 
 think
+
+thinking
 
 thinks
 
@@ -858,4 +874,8 @@ your
 
 yours
 
+youre
+
 z
+
+-
