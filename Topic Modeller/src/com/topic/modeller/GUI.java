@@ -114,42 +114,26 @@ public class GUI extends JFrame implements ActionListener
 				f1.Clear();
 				counter += 1;
 			}
+			
 			area2.setText("Comparision Results:\n"+"File1" +"\t\t"+"File2"+"\n");
-			list.clear();
-			File1.clear();
-			File2.clear();
-			list2.clear();
 			top1 = null;
 			top2 = null;
-			
-			//System.out.println(file1 + file2);
 			
 			
 			f1.Connect(file1,file2);
 			list = f1.ReadFile();
 			
-		//	System.out.println(list.get(1));
-			
 			File1 = list.get(0);
 			File2 = list.get(1);
+			
 			f1.extraCheck(File1);
 			f1.extraCheck(File2);
-			//System.out.println(list.get(1));
-			list2 = c1.sortMap(list.get(0),list.get(1));
 			
-			for(int i = 0;i<1;i++)
-			{
-				String[] tmp = list2.get(0);
-				for(int j= 0;j<tmp.length - 1;j++)
-				{
-					//System.out.println("we din here " + tmp[j]);
-				}
-				
-			}
-
+			list2 = c1.sortMap(list.get(0),list.get(1));
 			
 			top1 = list2.get(0);
 			top2 = list2.get(1);
+			
 			alike = c1.Comparision(top1,top2);
 		
 			
