@@ -2,7 +2,6 @@ package com.topic.modeller;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,99 +10,84 @@ import java.util.Map;
 public class Compare 
 {
 	
-	int i;
-	int counter = 0;
-	String top10;
-	String top10s;
-	int Scounter = 0;
-	int alike = 0;
-	GUI g1;
-	List<String[]> list = new ArrayList<String[]>();
+	private int i;
+	private int counter = 0;
+	private String top10;
+	private String top10s;
+	private int Scounter = 0;
+	private int alike = 0;
+	private GUI g1;
+	private List<String[]> list = new ArrayList<String[]>();
 	
 	
 	public List<String[]> sortMap(LinkedHashMap<String,Integer> File1, LinkedHashMap<String,Integer> File2)
 	{
-		//System.out.println(File2);
-		
 		
 	     LinkedHashMap<String, Integer> SortedFile1 = new LinkedHashMap<>();
 	     File1.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
 	              .forEachOrdered(x -> SortedFile1.put(x.getKey(), x.getValue()));
 	        
-        LinkedHashMap<String, Integer> SortedFile2 = new LinkedHashMap<>();
-        File2.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .forEachOrdered(x -> SortedFile2.put(x.getKey(), x.getValue()));
+	     LinkedHashMap<String, Integer> SortedFile2 = new LinkedHashMap<>();
+	     File2.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                  .forEachOrdered(x -> SortedFile2.put(x.getKey(), x.getValue()));
        
-    	
-		counter = 0;
-		Scounter = 0;
+		setCounter(0);
+		setScounter(0);
 
 		for(String temp1 : SortedFile2.keySet())
 		{		
 
-				if(counter == 10)
+				if(getCounter() == 10)
 				{
 
 					break;
 				}   	        	
 				
-				if(Scounter == 0)
+				if(getScounter() == 0)
 				{	
-					top10 = temp1;
+					setTop10(temp1);
 				}
 				else
 				{
-					top10 = top10 + " " + temp1;
+					setTop10(getTop10() + " " + temp1);
 				}
-				counter = counter + 1;
-				Scounter += 1;
+				setCounter(getCounter() + 1);
+				setScounter(getScounter() + 1);
 	       
 		}
 		
-    	String[] top2 = top10.split(" ");
+    	String[] top2 = getTop10().split(" ");
     	
-		counter = 0;
-		Scounter = 0;
+		setCounter(0);
+		setScounter(0);
         
     	
 		for(String temp : SortedFile1.keySet())
 		{		
 
-				if(counter == 10)
+				if(getCounter() == 10)
 				{
 
 					break;
 				}   	        	
 				
-				if(Scounter == 0)
+				if(getScounter() == 0)
 				{	
-					top10s = temp;
+					setTop10s(temp);
 				}
 				else
 				{
-					top10s = top10s + " " + temp;
+					setTop10s(getTop10s() + " " + temp);
 				}
-				counter = counter + 1;
-				Scounter += 1;
+				setCounter(getCounter() + 1);
+				setScounter(getScounter() + 1);
 	       
 		}
-		String[] top1 = top10s.split(" ");
+		String[] top1 = getTop10s().split(" ");
 		
-
-
-    		
-    		//System.out.println(top10);
-
-
-    		
-
-    		
-
-    		//System.out.println(top10s);
-    		
-    		list.add(top2);
-    		list.add(top1);
-    		return list;
+    		getList().add(top2);
+    		getList().add(top1);
+    		return getList();
     		
 
     		
@@ -111,20 +95,89 @@ public class Compare
 	
 	public int Comparision(String[] top1,String[] top2)
 	{
-		alike = 0;
-		for(i=0;i<10;i++)
+		setAlike(0);
+		for(setI(0);getI()<10;i++)
 		{
 			for(int j = 0;j<10;j++)
 			{
-				if(top1[i].equals(top2[j]))
+				if(top1[getI()].equals(top2[j]))
 				{
-					alike = alike + 1;
+					setAlike(getAlike() + 1);
 				}
 			}
 		}
 		
-		return alike;
+		return getAlike();
 		
+	}
+
+	
+	
+	//Setters and Getters
+	
+	public int getI() {
+		return i;
+	}
+
+	public int setI(int i) {
+		this.i = i;
+		return i;
+	}
+
+	public int getCounter() {
+		return counter;
+	}
+
+	public void setCounter(int counter) {
+		this.counter = counter;
+	}
+
+	public String getTop10() {
+		return top10;
+	}
+
+	public void setTop10(String top10) {
+		this.top10 = top10;
+	}
+
+	String getTop10s() {
+		return top10s;
+	}
+
+	void setTop10s(String top10s) {
+		this.top10s = top10s;
+	}
+
+	public int getScounter() {
+		return Scounter;
+	}
+
+	public void setScounter(int scounter) {
+		Scounter = scounter;
+	}
+
+	public int getAlike() {
+		return alike;
+	}
+
+	public void setAlike(int alike) {
+		this.alike = alike;
+	}
+
+	public GUI getG1() {
+		return g1;
+	}
+
+	public void setG1(GUI g1) {
+		this.g1 = g1;
+	}
+
+	public List<String[]> getList() {
+		return list;
+	}
+
+	public void setList(List<String[]> list) {
+		this.list = list;
 	}
 	
 	
