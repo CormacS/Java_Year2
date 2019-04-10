@@ -8,13 +8,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -24,8 +21,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class GUI extends JFrame implements ActionListener
 {
 
-	FileProcessing f1 = new FileProcessing();
-	Compare c1 = new Compare();
+	private FileProcessing f1 = new FileProcessing();
+	private Compare c1 = new Compare();
 	private JButton button1;
 	private JTextField field1;
 	private JButton button2;
@@ -37,17 +34,18 @@ public class GUI extends JFrame implements ActionListener
 	private JTextArea area2;
 	private JFileChooser chooser = new JFileChooser();
 	private FileNameExtensionFilter filter;
-	List<LinkedHashMap<String,Integer>> list = new ArrayList<LinkedHashMap<String,Integer>>();
-	LinkedHashMap<String, Integer> File1 = new LinkedHashMap<>();
-	LinkedHashMap<String, Integer> File2 = new LinkedHashMap<>();
-	List<String[]> list2 = new ArrayList<String[]>();
-	String[] top1;
-	String[] top2;
-	int alike = 0;
-	int counter = 0;
+	private List<LinkedHashMap<String,Integer>> list = new ArrayList<LinkedHashMap<String,Integer>>();
+	private LinkedHashMap<String, Integer> File1 = new LinkedHashMap<>();
+	private LinkedHashMap<String, Integer> File2 = new LinkedHashMap<>();
+	private List<String[]> list2 = new ArrayList<String[]>();
+	private String[] top1;
+	private String[] top2;
+	private int alike = 0;
+	private int counter = 0;
 	File file1;
 	File file2;
-
+	private static int f1counter = 0;
+	private static int f2counter = 0;
 	
 	public GUI (String title)
 	{
@@ -109,44 +107,50 @@ public class GUI extends JFrame implements ActionListener
 	{
 		if(e.getSource() == button1)
 		{
-			if(counter == 0)
+			if(f1counter > 0 && f2counter > 0)
 			{
-				f1.Clear();
-				counter += 1;
-			}
-			
-			area2.setText("Comparision Results:\n"+"File1" +"\t\t"+"File2"+"\n");
-			top1 = null;
-			top2 = null;
-			
-			
-			f1.Connect(file1,file2);
-			list = f1.ReadFile();
-			
-			File1 = list.get(0);
-			File2 = list.get(1);
-			
-			f1.extraCheck(File1);
-			f1.extraCheck(File2);
-			
-			list2 = c1.sortMap(list.get(0),list.get(1));
-			
-			top1 = list2.get(0);
-			top2 = list2.get(1);
-			
-			alike = c1.Comparision(top1,top2);
-		
-			
-			for(int i=0;i<10;i++)
-			{
-					
-				area2.append(top2[i]+"\t\t"+top1[i]+"\n");
-					
+				if(getCounter() == 0)
+				{
+					getF1().Clear();
+					setCounter(getCounter() + 1);
+				}
 				
-			}
+				area2.setText("Comparision Results:\n"+"File1" +"\t\t"+"File2"+"\n");
+				getList().clear();
+				getFile1().clear();
+				getFile2().clear();
+				getList2().clear();
+				setTop1(null);
+				setTop2(null);
+				
+				getF1().Connect(file1,file2);
+				setList(getF1().ReadFile());
+				
+				setFile1(getList().get(0));
+				setFile2(getList().get(1));
+				
+				getF1().extraCheck(getFile1());
+				getF1().extraCheck(getFile2());
+				
+				setList2(getC1().sortMap(getList().get(0),getList().get(1)));
+				
+				setTop1(getList2().get(0));
+				setTop2(getList2().get(1));
+				
+				setAlike(getC1().Comparision(getTop1(),getTop2()));
 			
-			alike = alike * 10;
-			area2.append("\nThe two documents are " +alike+"%"+" alike."+"\n");
+				for(int i=0;i<10;i++)
+				{
+					area2.append(getTop2()[i]+"\t\t"+getTop1()[i]+"\n");
+				}
+				
+				setAlike(getAlike() * 10);
+				area2.append("\nThe two documents are " +getAlike()+"%"+" alike."+"\n");
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(this, "Please select the 2 files first");
+			}
 			
 		}
 		
@@ -159,7 +163,7 @@ public class GUI extends JFrame implements ActionListener
 		}
 		if(e.getSource() == button3)
 		{
-			f1.Clear();
+			getF1().Clear();
 			area1.setText("List of Extra words:");
 		}
 		if(e.getSource() == f1Button)
@@ -174,6 +178,7 @@ public class GUI extends JFrame implements ActionListener
 		    		file1 = chooser.getSelectedFile().getAbsoluteFile(); 
 			    	JOptionPane.showMessageDialog(this,"You chose for File1: " +
 				            chooser.getSelectedFile().getName());
+			    	f1counter =+ 1;
 		    	}
 		    	else
 		    	{
@@ -196,6 +201,7 @@ public class GUI extends JFrame implements ActionListener
 		    		file2 = chooser.getSelectedFile().getAbsoluteFile(); 
 			    	JOptionPane.showMessageDialog(this,"You chose for File2: " +
 				            chooser.getSelectedFile().getName());
+			    	f2counter += 1;
 		    	}
 		    	else
 		    	{
@@ -206,8 +212,88 @@ public class GUI extends JFrame implements ActionListener
 		}
 		if(e.getSource() == button4)
 		{
-			f1.Write2File(top2,top1,alike);
+			getF1().Write2File(getTop2(),getTop1(),getAlike());
 		}
+	}
+
+	public FileProcessing getF1() {
+		return f1;
+	}
+
+	public void setF1(FileProcessing f1) {
+		this.f1 = f1;
+	}
+
+	public Compare getC1() {
+		return c1;
+	}
+
+	public void setC1(Compare c1) {
+		this.c1 = c1;
+	}
+
+	public List<LinkedHashMap<String,Integer>> getList() {
+		return list;
+	}
+
+	public void setList(List<LinkedHashMap<String,Integer>> list) {
+		this.list = list;
+	}
+
+	public LinkedHashMap<String, Integer> getFile1() {
+		return File1;
+	}
+
+	public void setFile1(LinkedHashMap<String, Integer> file1) {
+		File1 = file1;
+	}
+
+	public LinkedHashMap<String, Integer> getFile2() {
+		return File2;
+	}
+
+	public void setFile2(LinkedHashMap<String, Integer> file2) {
+		File2 = file2;
+	}
+
+	public List<String[]> getList2() {
+		return list2;
+	}
+
+	public void setList2(List<String[]> list2) {
+		this.list2 = list2;
+	}
+
+	public int getCounter() {
+		return counter;
+	}
+
+	public void setCounter(int counter) {
+		this.counter = counter;
+	}
+
+	public String[] getTop1() {
+		return top1;
+	}
+
+	public void setTop1(String[] top1) {
+		this.top1 = top1;
+	}
+
+	public String[] getTop2() {
+		return top2;
+	}
+
+	public void setTop2(String[] top2) {
+		this.top2 = top2;
+	}
+
+	public int getAlike() {
+		return alike;
+	}
+
+	public void setAlike(int alike) {
+		this.alike = alike;
 	}
 	
 
