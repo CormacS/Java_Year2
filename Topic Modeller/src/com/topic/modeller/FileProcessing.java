@@ -21,7 +21,9 @@ public class FileProcessing
 	File fleName;
 	File fleName2;
 	File fleName3;
+	File fleName4;
 	Scanner Scanners;
+	Scanner Scanners2;
 	Scanner myScanner;
 	Scanner myScanner2;
 	Scanner myScanner3;
@@ -36,16 +38,12 @@ public class FileProcessing
 	LinkedHashMap<String, Integer> File1 = new LinkedHashMap<>();
 	LinkedHashMap<String, Integer> File2 = new LinkedHashMap<>();
 
-	public void Connect()
+	public void Connect(File fleName,File fleName2)
 	{
-		String file = "ScottPilgrim.txt";
-		String file2 = "Scotty.txt";
 		String stop = "stopwords.txt";
 		
 		try
 		{
-			fleName = new File(file);
-		    fleName2 = new File(file2);
 		    fleName3 = new File(stop);
 			myScanner = new Scanner(fleName);
 			myScanner2 = new Scanner(fleName2);
@@ -66,38 +64,47 @@ public class FileProcessing
 		if(File1.isEmpty() == false)
 		{
 			File1.clear();
+			
 		}
 		if(File2.isEmpty() == false)
 		{
 			File2.clear();
+			
 		}
+		if(list.isEmpty() == false)
+		{
+			list.clear();
+			
+		}
+		/*
 		for(String temp : File2.keySet())
 		{
 			System.out.println(temp+"\n\n\n yeet");
 		}
+		*/
 		int counter = 0;
 		//Reading in all the stop words into a string
 		try
 		{
-			while(myScanner3.hasNextLine())
+			while(myScanner3.hasNext())
 			{
 				String str = myScanner3.nextLine();
 				if(counter == 0)
 				{
 					nonowords = str;
-					nonowords.replaceAll("(?:--|[\\\\[\\\\]{}()+/\\\\\\\\.,'])","").toLowerCase();
+					nonowords.replaceAll("(?:--|[\\\\[\\\\]{}()+/\\\\\\\\.!,'])","").toLowerCase();
 					counter += 1;
 				}
 				else
 				{					
 					nonowords = nonowords + " "+str;
-					nonowords.replaceAll("(?:--|[\\\\[\\\\]{}()+/\\\\\\\\.,'])","").toLowerCase();
+					nonowords.replaceAll("(?:--|[\\\\[\\\\]{}()+/\\\\\\\\.!,'])","").toLowerCase();
 					
 				}
 				
 			}
 			//Checking the words in file 2 and passing them to the Validate method 
-			while(myScanner2.hasNextLine())
+			while(myScanner2.hasNext())
 			{
 				temp = myScanner2.next();
 				temp = temp.replaceAll("(?:--|[\\\\[\\\\]{}()+/\\\\\\\\.,'])","").toLowerCase();
@@ -105,7 +112,7 @@ public class FileProcessing
 				boolean extracheck = ValidateWord(temp);
 				if(extracheck == true)
 				{
-					System.out.println("in hereee :o");
+					//System.out.println("in hereee :o");
 					if(File2.keySet().contains(temp))
 					{
 						File2.put(temp,File2.get(temp)+1);
@@ -118,7 +125,7 @@ public class FileProcessing
 			}
 			
 			//Checking the words in file 1 and passing them to the Validate method 			
-			while(myScanner.hasNextLine())
+			while(myScanner.hasNext())
 			{
 				temp = myScanner.next();
 				temp = temp.replaceAll("(?:--|[\\\\[\\\\]{}()+/\\\\\\\\.,'])","").toLowerCase();
@@ -147,7 +154,7 @@ public class FileProcessing
 		{
 			System.out.println(e);
 		}
-		
+		list.clear();
 		//Calls the Class Compare to Compare the two validate hashmaps
 		list.add(File1);
 		list.add(File2);
@@ -169,33 +176,6 @@ public class FileProcessing
 				Valid = false;
 			}
 		}
-		if(yeet != 0 && Valid == true)
-		{
-			String check;
-			try
-			{
-			//	System.out.println("IN here");
-				Scanners = new Scanner(extra);
-				
-				while(Scanners.hasNextLine())
-				{
-					check = Scanners.next();
-					System.out.println(check + word);
-					if(word.equals(check))
-					{
-						Valid = false;
-						System.out.println("\n\n Falseee wrd \n\n" + Valid);
-					}
-				}
-				
-				Scanners.close();
-
-			}
-			catch(Exception e)
-			{
-
-			}
-		}
 		
 		return Valid;
 	}
@@ -214,7 +194,67 @@ public class FileProcessing
 		{
 			System.out.println("Error writing/creating names.txt");
 		}
+		
 	}
+	
+	public void extraCheck(LinkedHashMap<String,Integer> File)
+	{
+		String check;
+		try
+		{
+			//System.out.println("IN here");
+			Scanners = new Scanner(extra);
+			//Scanners2 = new Scanner(extra);
+			
+			while(Scanners.hasNextLine())
+			{
+				check = Scanners.next();
+				//System.out.println(check + word);
+				if(File.containsKey(check))
+				{
+					File.remove(check);
+					System.out.println("\n\n Removing " + check);
+				}
+			}
+			
+			
+			Scanners.close();
+
+		}
+		catch(Exception e)
+		{
+
+		}
+		
+	}
+	
+	public void Write2File(String[] top2,String[] top1,int alike)
+	{
+		try
+		{
+		    String str = "Output.txt";
+		    fleName4 = new File(str);
+		    BufferedWriter writer = new BufferedWriter(new FileWriter(fleName4, false));
+		    writer.write("");
+		    for(int i = 0;i<10;i++)
+		    {
+		    	writer.write(top2[i]+"\t\t"+top1[i]+"\n");
+		    }
+		    
+		    writer.append("\nThe files are "+alike+"% alike\n");
+		    
+		    writer.close();
+		}
+		catch(Exception e)
+		{
+			System.out.println("Can't write to file");
+		}
+	     
+
+	}
+	
+	
+	
 	
 	public void Clear()
 	{
