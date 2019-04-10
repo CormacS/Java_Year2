@@ -34,7 +34,6 @@ public class FileProcessing
 
 	
 	List<LinkedHashMap<String,Integer>> list = new ArrayList<LinkedHashMap<String,Integer>>();
-	//HashMap to get a key and a value
 	LinkedHashMap<String, Integer> File1 = new LinkedHashMap<>();
 	LinkedHashMap<String, Integer> File2 = new LinkedHashMap<>();
 
@@ -52,10 +51,8 @@ public class FileProcessing
 		}
 		catch(Exception e)
 		{
-			System.out.println("I want to Die");
+			System.out.println("Can't connect to File");
 		}
-		
-		//ReadFile();
 	}
 
 	
@@ -76,12 +73,7 @@ public class FileProcessing
 			list.clear();
 			
 		}
-		/*
-		for(String temp : File2.keySet())
-		{
-			System.out.println(temp+"\n\n\n yeet");
-		}
-		*/
+
 		int counter = 0;
 		//Reading in all the stop words into a string
 		try
