@@ -1,5 +1,6 @@
 Author: Cormac Smith
 Date Due: 12/04/2019
+Video: https://www.youtube.com/watch?v=OUvIpFVF9BA&feature=youtu.be
 
 I chose to do a Topic Modeller. I read in two files and
 take the top 10 most common words in each. I also had a file of stopwords,
@@ -33,19 +34,11 @@ source my answer online.
 The website can be found here: 
 https://codippa.com/how-to-sort-a-map-in-java-8-sort-a-map-using-stream/
 
-Extra things I'd like to implement/do with more time would be:
-- A Marking Scheme
-	I feel like I would have done the comparision part a bit different
-	due to small texts not really having many words in it,some of the bottom
-	tier words are there based on alphabetical order, I would like to put
-	more emphasis on the top 5 and how in common those are along with the 
-	remaining 5. 
-- Remove the redundant code
-	I believe there is redundant code that I would like to remove, instead
-	of had the same code twice for the 2 files, just have the 1 code and
-	put both files through it. This would clean up the code for sure.
-
-
+Extra things I did outside of the Core Requirements:
+- I implemented a GUI
+- I allowed to user to input extra stop words
+- I made a File Chooser
+- I allowed the user to save the output to a file
 
 
 
