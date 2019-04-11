@@ -239,7 +239,7 @@ public class FileProcessing
 		}
 		catch(Exception e)
 		{
-			System.out.println("Error removing word from hashmap: "+e);
+
 		}
 		
 	}

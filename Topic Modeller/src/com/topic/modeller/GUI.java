@@ -254,6 +254,7 @@ public class GUI extends JFrame implements ActionListener
 		if(e.getSource() == button4)
 		{
 			getF1().Write2File(getTop2(),getTop1(),getAlike());
+			JOptionPane.showMessageDialog(this, "Written to file!");
 		}
 	}
 	
