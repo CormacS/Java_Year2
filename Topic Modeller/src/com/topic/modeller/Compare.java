@@ -1,5 +1,20 @@
 package com.topic.modeller;
 
+/*
+ * Author: Cormac Smith
+ * Date Due: 12th April 2019
+ * Description: 
+ * This project reads in two files and based on the top 10 most common words in each, checks to see if they are
+ * alike by comparing how many in common the 2 files. Users can then manually select words to be removed and can output the results
+ * to a file	
+ * 
+ * Class Description:
+ * This is my Compare class, here the HashMaps are ordered by highest value and then the top 10 of each hashmap are put into an array
+ * and compared against eachother
+ */
+
+
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -9,7 +24,7 @@ import java.util.Map;
 
 public class Compare 
 {
-	
+	//Attributes
 	private int i;
 	private int counter = 0;
 	private String top10;
@@ -24,16 +39,20 @@ public class Compare
 	{
 		
 	     LinkedHashMap<String, Integer> SortedFile1 = new LinkedHashMap<>();
+	     
+	     //The follow code for sorting a hashmap is not mine and was taken from codippa.com
 	     File1.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
 	              .forEachOrdered(x -> SortedFile1.put(x.getKey(), x.getValue()));
 	        
 	     LinkedHashMap<String, Integer> SortedFile2 = new LinkedHashMap<>();
 	     File2.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                   .forEachOrdered(x -> SortedFile2.put(x.getKey(), x.getValue()));
+	     //Borrowed code ends here
        
 		setCounter(0);
 		setScounter(0);
 
+		//For loop to go through the sorted hashmap and put the top 10 into an array
 		for(String temp1 : SortedFile2.keySet())
 		{		
 
@@ -61,7 +80,7 @@ public class Compare
 		setCounter(0);
 		setScounter(0);
         
-    	
+		//For loop to go through the sorted hashmap and put the top 10 into an array
 		for(String temp : SortedFile1.keySet())
 		{		
 
@@ -85,14 +104,16 @@ public class Compare
 		}
 		String[] top1 = getTop10s().split(" ");
 		
-    		getList().add(top2);
-    		getList().add(top1);
-    		return getList();
+		//Adding the top10 of each file to the a list and returning it back
+    	getList().add(top2);
+    	getList().add(top1);
+    	return getList();
     		
 
     		
 	}
 	
+	//Here is where the top10 of each file are compared against eachother
 	public int Comparision(String[] top1,String[] top2)
 	{
 		setAlike(0);

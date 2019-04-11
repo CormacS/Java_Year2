@@ -1,21 +1,32 @@
 package com.topic.modeller;
 
+/*
+ * Author: Cormac Smith
+ * Date Due: 12th April 2019
+ * Project Description:
+ * This project reads in two files and based on the top 10 most common words in each, checks to see if they are
+ * alike by comparing how many in common the 2 files. Users can then manually select words to be removed and can output the results
+ * to a file	
+ * 
+ * Class Description:
+ * This is my File Processing class, it connects to the files, reads the files,checks the words in each file against a list of stop words
+ * and words the user has manually selected. It also writes the results out to a file and clears the contents of the extra words
+ * file the User can enter into.
+ */
+
+
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.*;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-//import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 public class FileProcessing 
 {
+	//Attributes used in this class. 
 	private static int yeet = 0;
 	private int i = 0;
 	private File fleName;
@@ -32,11 +43,12 @@ public class FileProcessing
 	private boolean stopped = false;
 	private File extra = new File("specific.txt");
 
-	
+	//HashMaps used to store the results and a List of Hashmaps to pass them between classes.
 	private List<LinkedHashMap<String,Integer>> list = new ArrayList<LinkedHashMap<String,Integer>>();
 	private LinkedHashMap<String, Integer> File1 = new LinkedHashMap<>();
 	private LinkedHashMap<String, Integer> File2 = new LinkedHashMap<>();
 
+	//This method is used to connect the files
 	public void Connect(File fleName,File fleName2)
 	{
 		String stop = "stopwords.txt";
@@ -54,9 +66,11 @@ public class FileProcessing
 		}
 	}
 
-	
+	// This method is used to read through the contents of each File and store the results in the Hashmaps
+	// Everytime a word is read, it is passed to the ValidateWord method to check if the word is in stopwords file.
 	public List<LinkedHashMap<String,Integer>> ReadFile()
 	{
+		//Clearing the contents of the files.
 		if(getFile1().isEmpty() == false)
 		{
 			getFile1().clear();
@@ -74,15 +88,19 @@ public class FileProcessing
 		}
 
 		int counter = 0;
+		
 		//Reading in all the stop words into a string
 		try
 		{
 			while(getMyScanner3().hasNext())
 			{
 				String str = getMyScanner3().nextLine();
+				// If its the first word just add it to the string, any word after that needs to be appended onto the string, which is why
+				// I used the counter.
 				if(counter == 0)
 				{
 					setNonowords(str);
+					//Replacing all special characters and capital letters from the word
 					getNonowords().replaceAll("(?:--|[\\\\[\\\\]{}()+/\\\\\\\\.!,'])","").toLowerCase();
 					counter += 1;
 				}
@@ -100,10 +118,12 @@ public class FileProcessing
 				setTemp(getMyScanner2().next());
 				setTemp(getTemp().replaceAll("(?:--|[\\\\[\\\\]{}()+/\\\\\\\\.,'])","").toLowerCase());
 				
+				//Here we pass the word to the validate class to see if its okay to add to the Hashmap
 				boolean extracheck = ValidateWord(getTemp());
 				if(extracheck == true)
 				{
-					//System.out.println("in hereee :o");
+					//Here I am checking if the Hashmap already contains the word, if it does increase the value by 1, else add the key
+					// and set the default to 1
 					if(getFile2().keySet().contains(getTemp()))
 					{
 						getFile2().put(getTemp(),getFile2().get(getTemp())+1);
@@ -121,6 +141,8 @@ public class FileProcessing
 				setTemp(getMyScanner().next());
 				setTemp(getTemp().replaceAll("(?:--|[\\\\[\\\\]{}()+/\\\\\\\\.,'])","").toLowerCase());
 
+				//Here I am checking if the Hashmap already contains the word, if it does increase the value by 1, else add the key
+				// and set the value to 1
 				if(ValidateWord(getTemp()) == true)
 				{
 					if(getFile1().keySet().contains(getTemp()))
@@ -146,19 +168,22 @@ public class FileProcessing
 			System.out.println(e);
 		}
 		getList().clear();
-		//Calls the Class Compare to Compare the two validate hashmaps
+		
+		//Adding the Hashmaps to the List so I can return them both back
 		getList().add(getFile1());
 		getList().add(getFile2());
 		return getList();
-		//Compare compare= new Compare();
-		//compare.sortMap(File1,File2);
 	}
 	
+	//This method is used to check if a word is on the list of stopwords, if it is return false so it doesnt get added to the Hashmap
 	public boolean ValidateWord(String word)
 	{
+		//Adding the string of bad words to an array. As far as I know, doing it this way is the only way you can initilize an array
+		//Without defining the size in advance
 		String[] stopwords = getNonowords().split(" ");
 		boolean Valid = true;
 		setI(0);
+		//Checks if the word is in the array of stop words
 		for(setI(0);getI()<stopwords.length;i++)
 		{
 			stopwords[getI()] = stopwords[getI()].replace(",","");
@@ -171,6 +196,8 @@ public class FileProcessing
 		return Valid;
 	}
 	
+	//This class is used to write the Extra stop words the user wants to a new file. I chose to use a file instead of an array
+	//Because I mainly wanted to practise writing to files more.
 	public void extraWords(String word)
 	{
 		try
@@ -188,19 +215,18 @@ public class FileProcessing
 		
 	}
 	
+	//This checks if the extra words the user has entered are in the hashmap, if they are, remove the key.
 	public void extraCheck(LinkedHashMap<String,Integer> File)
 	{
 		String check;
 		try
 		{
-			//System.out.println("IN here");
 			setScanners(new Scanner(getExtra()));
-			//Scanners2 = new Scanner(extra);
 			
 			while(getScanners().hasNextLine())
 			{
 				check = getScanners().next();
-				//System.out.println(check + word);
+				//Here is where we check if the word is in the hashmap
 				if(File.containsKey(check))
 				{
 					File.remove(check);
@@ -208,23 +234,24 @@ public class FileProcessing
 				}
 			}
 			
-			
 			getScanners().close();
 
 		}
 		catch(Exception e)
 		{
-
+			System.out.println("Error removing word from hashmap: "+e);
 		}
 		
 	}
 	
+	//Here we write the results of the comparison to a file.
 	public void Write2File(String[] top2,String[] top1,int alike)
 	{
 		try
 		{
 		    String str = "Output.txt";
 		    setFleName4(new File(str));
+		    //Set the BufferedWriter to False to stop appending to the file and just write over the previous contents
 		    BufferedWriter writer = new BufferedWriter(new FileWriter(getFleName4(), false));
 		    writer.write("");
 		    for(int i = 0;i<10;i++)
@@ -244,9 +271,7 @@ public class FileProcessing
 
 	}
 	
-	
-	
-	
+	//This is used to clear the extra words file incase the user no longer wants to ignore those words
 	public void Clear()
 	{
 		try

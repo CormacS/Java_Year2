@@ -1,5 +1,17 @@
 package com.topic.modeller;
 
+/*
+ * Author: Cormac Smith
+ * Date Due: 12th April 2019
+ * Description: 
+ * This project reads in two files and based on the top 10 most common words in each, checks to see if they are
+ * alike by comparing how many in common the 2 files. Users can then manually select words to be removed and can output the results
+ * to a file	
+ * 
+ * Class Description:
+ * This is my GUI class, this is where I create the interface for the user.
+ */
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -20,7 +32,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class GUI extends JFrame implements ActionListener
 {
-
+	//Attributes
 	private FileProcessing f1 = new FileProcessing();
 	private Compare c1 = new Compare();
 	private JButton button1;
@@ -50,19 +62,28 @@ public class GUI extends JFrame implements ActionListener
 	public GUI (String title)
 	{
 		super(title);
+		//Setting layout, I use both as without FlowLayout, the panels will go over eachother.
 		setLayout(new BorderLayout());
 		setLayout(new FlowLayout());
+		
+		//Buttons
 		f1Button = new JButton("Select File 1");
 		f2Button = new JButton("Select File 2");
 		button1 = new JButton("Compare Files");
-		field1 = new JTextField("Extra word you want to exlude: ");
-		field1.setColumns(10);
 		button2 = new JButton("Submit word");
 		button3 = new JButton("Clear the extra words list");
 		button4 = new JButton("Save to File");
+		
+		//Field(s)
+		field1 = new JTextField("Extra word you want to exlude: ");
+		field1.setColumns(10);
+
+		//Panels
 		JPanel panel1= new JPanel();
 		JPanel panel2= new JPanel();
 		JPanel panel3= new JPanel();
+		
+		//TextAreas
 		area1 = new JTextArea("List of Extra words:");
 		area2 = new JTextArea();
 		area2.setRows(8);
@@ -70,13 +91,16 @@ public class GUI extends JFrame implements ActionListener
 		area1.setRows(8);
 		area1.setColumns(40);
 		
+		//This filter is used to only show the user text files
 		filter = new FileNameExtensionFilter("TEXT FILES","txt","text");
 		chooser.setFileFilter(filter);
 
+		//Adding all panels to the NORTH, with FlowLayout above, they won't go on top of eachother
 		add(panel1,BorderLayout.NORTH);
 		add(panel2,BorderLayout.NORTH);
 		add(panel3,BorderLayout.NORTH);
 
+		//Adding the buttons and areas to the panels
 		panel1.add(f1Button);
 		panel1.add(f2Button);
 		panel1.add(button1);
@@ -87,7 +111,7 @@ public class GUI extends JFrame implements ActionListener
 		panel3.add(area2);
 		panel3.add(button4);
 		
-		
+		//Adding listeners to the buttons 
 		button1.addActionListener(this);
 		button2.addActionListener(this);
 		button3.addActionListener(this);	
@@ -103,8 +127,12 @@ public class GUI extends JFrame implements ActionListener
 	}
 
 	@Override
+	//This method does different things once a button is pressed
 	public void actionPerformed(ActionEvent e) 
 	{
+		//Once this button is pressed it runs through the program comparing the files
+		
+		//This is used to make sure the user selects the files first, before trying to compare
 		if(e.getSource() == button1)
 		{
 			if(f1counter > 0 && f2counter > 0)
@@ -123,22 +151,28 @@ public class GUI extends JFrame implements ActionListener
 				setTop1(null);
 				setTop2(null);
 				
+				//Calls connect in FileProcessing
 				getF1().Connect(file1,file2);
 				setList(getF1().ReadFile());
+				
 				
 				setFile1(getList().get(0));
 				setFile2(getList().get(1));
 				
+				//Passes the Hashmaps to check if any extra words are in it
 				getF1().extraCheck(getFile1());
 				getF1().extraCheck(getFile2());
 				
+				//Passes the Hashmaps to the Compare class to be sorted
 				setList2(getC1().sortMap(getList().get(0),getList().get(1)));
 				
 				setTop1(getList2().get(0));
 				setTop2(getList2().get(1));
 				
+				//Passes arrays to the compare class to do the final comparison
 				setAlike(getC1().Comparision(getTop1(),getTop2()));
 			
+				//Writes the results to the textarea on the GUI
 				for(int i=0;i<10;i++)
 				{
 					area2.append(getTop2()[i]+"\t\t"+getTop1()[i]+"\n");
@@ -154,6 +188,7 @@ public class GUI extends JFrame implements ActionListener
 			
 		}
 		
+		//If this button is pressed, the word the user entered is added to the extra words checklist
 		if(e.getSource() == button2)
 		{
 			String extra = field1.getText();
@@ -161,11 +196,14 @@ public class GUI extends JFrame implements ActionListener
 			f2.extraWords(extra);
 			area1.append("\n"+field1.getText());
 		}
+		//This button clears the extra words file so those words can be compared again
 		if(e.getSource() == button3)
 		{
 			getF1().Clear();
 			area1.setText("List of Extra words:");
 		}
+		
+		//If this button is pressed, a FileChooser will pop up to allow the user to chooses their first file
 		if(e.getSource() == f1Button)
 		{
 			int returnVal = chooser.showOpenDialog(this);
@@ -173,6 +211,7 @@ public class GUI extends JFrame implements ActionListener
 		    {
 		    	String filename1 = chooser.getSelectedFile().getName();
 		    	
+		    	//Checking if the file the user gave ends with .txt
 		    	if(filename1.endsWith(".txt"))
 		    	{
 		    		file1 = chooser.getSelectedFile().getAbsoluteFile(); 
@@ -186,7 +225,8 @@ public class GUI extends JFrame implements ActionListener
 		    	}
 		    }
 		}
-		    
+		   
+		//This button pops open a FileChooser to allow the user to choose their second file
 		if(e.getSource() == f2Button)
 		{
 			int returnVal = chooser.showOpenDialog(this);
@@ -196,6 +236,7 @@ public class GUI extends JFrame implements ActionListener
 		    	String filename = chooser.getSelectedFile().getName();
 		    	System.out.println(filename);
 		    	
+		    	//Checking if the file is a txt file
 		    	if(filename.endsWith(".txt"))
 		    	{
 		    		file2 = chooser.getSelectedFile().getAbsoluteFile(); 
@@ -215,6 +256,9 @@ public class GUI extends JFrame implements ActionListener
 			getF1().Write2File(getTop2(),getTop1(),getAlike());
 		}
 	}
+	
+	
+	//Getters and Setters
 
 	public FileProcessing getF1() {
 		return f1;
